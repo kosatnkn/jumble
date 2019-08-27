@@ -44,6 +44,12 @@ public class CustomErrorWebExceptionHandler extends AbstractErrorWebExceptionHan
     return RouterFunctions.route(RequestPredicates.all(), this::renderErrorResponse);
   }
 
+  /**
+   * Render the error response
+   *
+   * @param request request
+   * @return repose
+   */
   private Mono<ServerResponse> renderErrorResponse(final ServerRequest request) {
 
     // show stack trace when running in debug mode
@@ -54,6 +60,12 @@ public class CustomErrorWebExceptionHandler extends AbstractErrorWebExceptionHan
         .body(BodyInserters.fromObject(errorPropertiesMap));
   }
 
+  /**
+   * Get HTTP response code by error type
+   *
+   * @param error error
+   * @return HTTP response code
+   */
   private HttpStatus getStatusByError(Throwable error) {
 
     switch (error.getClass().getSimpleName()) {

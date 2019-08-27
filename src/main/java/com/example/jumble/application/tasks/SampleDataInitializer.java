@@ -2,6 +2,8 @@ package com.example.jumble.application.tasks;
 
 import com.example.jumble.domain.entities.Movie;
 import com.example.jumble.domain.boundary.repositories.MovieRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -14,6 +16,8 @@ public class SampleDataInitializer implements ApplicationRunner {
 	@Autowired
 	private MovieRepository mr;
 
+	private Logger logger = LoggerFactory.getLogger(SampleDataInitializer.class);
+
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 
@@ -24,6 +28,6 @@ public class SampleDataInitializer implements ApplicationRunner {
 		mr.deleteAll()
 				.thenMany(movieFlux)
 				.thenMany(mr.findAll())
-				.subscribe(System.out::println);
+				.subscribe(message -> this.logger.info(message.toString()));
 	}
 }
