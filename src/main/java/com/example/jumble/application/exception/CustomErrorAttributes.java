@@ -1,8 +1,14 @@
 package com.example.jumble.application.exception;
 
+import com.example.jumble.application.exception.types.ValidationException;
+import com.example.jumble.application.transport.request.entities.RequestEntity;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Set;
+import javax.validation.ConstraintViolation;
+import org.hibernate.validator.internal.engine.ConstraintViolationImpl;
 import org.springframework.boot.web.reactive.error.DefaultErrorAttributes;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -20,7 +26,7 @@ public class CustomErrorAttributes extends DefaultErrorAttributes {
 
     switch (error.getClass().getSimpleName()) {
       case "ValidationException":
-        return handleValidationException(error);
+        return handleValidationException((ValidationException)error);
       case "FilterException":
       case "DomainException":
         return handleRecoverableException(error, includeStackTrace);
@@ -57,15 +63,18 @@ public class CustomErrorAttributes extends DefaultErrorAttributes {
    * @param error exception
    * @return error description
    */
-  private Map<String, Object> handleValidationException(Throwable error) {
+  private Map<String, Object> handleValidationException(ValidationException error) {
 
     Map<String, Object> errorDetails = new LinkedHashMap<String, Object>();
 
+    System.out.println(error.getErrors());
+
     errorDetails.put("type", error.getClass().getSimpleName());
-    errorDetails.put("errors", "");
+    errorDetails.put("errors", this.formatValidationErrors(error.getErrors()));
 
     return errorDetails;
   }
+
 
   /**
    * Handle unrecoverable and more generic exceptions
@@ -100,8 +109,34 @@ public class CustomErrorAttributes extends DefaultErrorAttributes {
     error.printStackTrace(new PrintWriter(stackTrace));
     stackTrace.flush();
 
-    System.out.println(stackTrace.toString());
-
     return stackTrace.toString();
+  }
+
+  private Map<String, ArrayList<String>> formatValidationErrors(Set<ConstraintViolation<RequestEntity>> errors) {
+
+    Map<String, ArrayList<String>> errDetails = new LinkedHashMap<String, ArrayList<String>>();
+
+    errors.forEach(err -> {
+
+      String key = err.getPropertyPath().toString();
+      String val = err.getMessage();
+
+      if(errDetails.containsKey(key)) {
+
+        ArrayList<String> arrVal = errDetails.get(key);
+        arrVal.add(val);
+
+        errDetails.put(key, arrVal);
+
+        return;
+      }
+
+      ArrayList<String> arr = new ArrayList<String>();
+      arr.add(val);
+
+      errDetails.put(key, arr);
+    });
+
+    return errDetails;
   }
 }
