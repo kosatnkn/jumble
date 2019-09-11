@@ -15,7 +15,7 @@
 
 - [x] Add Logger
     Using the default logger.
-    The logging format can e changed in several ways.
+    The logging format can be changed in several ways.
     See [Configuring Logback with Spring Boot](https://lankydan.dev/2019/01/09/configuring-logback-with-spring-boot)
     for more details.
     
