@@ -1,13 +1,19 @@
 package com.example.jumble.application.handlers;
 
+import com.example.jumble.application.transport.request.entities.CustomRequestEntity;
+import com.example.jumble.application.validator.CustomRequestEntityValidator;
 import com.example.jumble.domain.entities.Movie;
-import com.example.jumble.domain.entities.MovieEvent;
 import com.example.jumble.domain.services.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -44,21 +50,5 @@ public class MovieHandler {
 
     return ServerResponse.ok()
         .body(movie, Movie.class);
-  }
-
-  /**
-   * Handle get events of movies by movie id
-   *
-   * @param request ServerRequest
-   * @return ServerResponse
-   */
-  public Mono<ServerResponse> events(ServerRequest request) {
-
-    String id = request.pathVariable("id");
-    Flux<MovieEvent> movieEvents = this.movieService.getEvents(id);
-
-    return ServerResponse.ok()
-        .contentType(MediaType.TEXT_EVENT_STREAM)
-        .body(movieEvents, MovieEvent.class);
   }
 }

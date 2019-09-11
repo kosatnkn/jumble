@@ -1,6 +1,6 @@
 package com.example.jumble.application.handlers;
 
-import com.example.jumble.application.entities.AppDetail;
+import com.example.jumble.application.transport.response.transformers.AppDetailTransformer;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -17,13 +17,13 @@ public class AppDetailHandler {
    */
   public Mono<ServerResponse> details(ServerRequest request) {
 
-    AppDetail appDetail = new AppDetail(
+    AppDetailTransformer appDetailTransformer = new AppDetailTransformer(
         "Test API",
         "v1.0.0",
         "A short description of the usage of the API"
     );
 
     return ServerResponse.ok()
-        .body(Mono.just(appDetail), AppDetail.class);
+        .body(Mono.just(appDetailTransformer), AppDetailTransformer.class);
   }
 }
