@@ -1,11 +1,7 @@
 package com.example.jumble.application.handlers;
 
-import com.example.jumble.application.exception.types.ValidationException;
 import com.example.jumble.application.transport.request.entities.CustomRequestEntity;
-import com.example.jumble.application.transport.request.entities.RequestEntity;
-import java.util.Set;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
+import com.example.jumble.application.validator.RequestEntityValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -17,17 +13,19 @@ import reactor.core.publisher.Mono;
 public class CustomHandlerTwo {
 
   @Autowired
-  private Validator validator;
+  private RequestEntityValidator validator;
 
   public Mono<ServerResponse> customValidationTwo(ServerRequest request) {
 
     Mono<String> responseBody = request.bodyToMono(CustomRequestEntity.class)
         .flatMap(body -> {
 
-          Set<ConstraintViolation<RequestEntity>> errors = this.validator.validate(body);
-
-          if(!errors.isEmpty()) {
-            return Mono.error(new ValidationException(errors));
+          // validate
+          try {
+            this.validator.validate(body);
+          }
+          catch (Exception ex) {
+            return Mono.error(ex);
           }
 
           return Mono.just(String.format("Hi there, %s [%s]!", body.getName(), body.getCode()));
