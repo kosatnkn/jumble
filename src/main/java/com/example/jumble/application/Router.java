@@ -1,7 +1,6 @@
 package com.example.jumble.application;
 
 import com.example.jumble.application.handlers.AppDetailHandler;
-import com.example.jumble.application.handlers.CustomHandlerTwo;
 import com.example.jumble.application.handlers.MovieHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,11 +27,4 @@ public class Router {
         .andRoute(RequestPredicates.POST("/movies"), movieHandler::add);
   }
 
-  @Bean
-  public RouterFunction<ServerResponse> customRoutesTwo(CustomHandlerTwo customHandlerTwo) {
-
-    return RouterFunctions
-        .route(RequestPredicates.POST("/custom_two"), customHandlerTwo::customValidationTwo);
-//        .andRoute(RequestPredicates.POST("/custom_two"), customHandler::customValidationTwo);
-  }
 }
