@@ -6,14 +6,12 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
-import org.hibernate.validator.internal.engine.ConstraintViolationImpl;
 import org.springframework.boot.web.reactive.error.DefaultErrorAttributes;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
-
-import java.util.Map;
 
 @Component
 public class CustomErrorAttributes extends DefaultErrorAttributes {
@@ -112,15 +110,22 @@ public class CustomErrorAttributes extends DefaultErrorAttributes {
     return stackTrace.toString();
   }
 
+  /**
+   * Get validation errors from validator output
+   *
+   * @param errors Set of validation errors
+   * @return error map
+   */
   private Map<String, ArrayList<String>> formatValidationErrors(Set<ConstraintViolation<RequestEntity>> errors) {
 
     Map<String, ArrayList<String>> errDetails = new LinkedHashMap<String, ArrayList<String>>();
 
-    errors.forEach(err -> {
+    errors.forEach(error -> {
 
-      String key = err.getPropertyPath().toString();
-      String val = err.getMessage();
+      String key = error.getPropertyPath().toString();
+      String val = error.getMessage();
 
+      // when a validation error already exists for the field
       if(errDetails.containsKey(key)) {
 
         ArrayList<String> arrVal = errDetails.get(key);
@@ -131,6 +136,7 @@ public class CustomErrorAttributes extends DefaultErrorAttributes {
         return;
       }
 
+      // when there are no validation errors for the field
       ArrayList<String> arr = new ArrayList<String>();
       arr.add(val);
 

@@ -8,6 +8,7 @@ import lombok.Data;
 public class CustomRequestEntity implements RequestEntity {
 
     @NotEmpty
+    @Size(min = 4, max = 7)
     private String name;
 
     @NotEmpty
