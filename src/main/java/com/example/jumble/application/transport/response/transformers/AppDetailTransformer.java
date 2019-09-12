@@ -1,11 +1,11 @@
-package com.example.jumble.application.entities;
+package com.example.jumble.application.transport.response.transformers;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class AppDetail {
+public class AppDetailTransformer {
 
   private String name;
   private String version;

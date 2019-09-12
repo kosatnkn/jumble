@@ -22,8 +22,9 @@ public class Router {
   public RouterFunction<ServerResponse> movieRoutes(MovieHandler movieHandler) {
 
     return RouterFunctions
-        .route(RequestPredicates.GET("/movie"), movieHandler::all)
-        .andRoute(RequestPredicates.GET("/movie/{id}"), movieHandler::byId)
-        .andRoute(RequestPredicates.GET("/movie/{id}/event"), movieHandler::events);
+        .route(RequestPredicates.GET("/movies"), movieHandler::get)
+        .andRoute(RequestPredicates.GET("/movies/{id}"), movieHandler::getById)
+        .andRoute(RequestPredicates.POST("/movies"), movieHandler::add);
   }
+
 }
