@@ -1,9 +1,14 @@
 package com.example.jumble.application.handlers;
 
+import com.example.jumble.application.transformer.ResponseEntity;
+import com.example.jumble.application.transformer.ResponseEntityTransformer;
 import com.example.jumble.application.transport.request.entities.MovieRequestEntity;
+import com.example.jumble.application.transport.response.transformers.MovieTransformer;
+import com.example.jumble.application.transport.response.transformers.ResourceIdentifierTransformer;
 import com.example.jumble.application.validator.RequestEntityValidator;
 import com.example.jumble.domain.entities.Movie;
 import com.example.jumble.domain.services.MovieService;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -19,6 +24,9 @@ public class MovieHandler {
   private RequestEntityValidator validator;
 
   @Autowired
+  private ResponseEntityTransformer transformer;
+
+  @Autowired
   private MovieService movieService;
 
   /**
@@ -31,8 +39,10 @@ public class MovieHandler {
 
     Flux<Movie> movies = this.movieService.getAllMovies();
 
+    Flux<Map> tMovies = transformer.transform(movies, new MovieTransformer());
+
     return ServerResponse.ok()
-        .body(movies, Movie.class);
+        .body(tMovies, Map.class);
   }
 
   /**
@@ -46,8 +56,10 @@ public class MovieHandler {
     String id = request.pathVariable("id");
     Mono<Movie> movie = this.movieService.getMovieById(id);
 
+    Mono<Map> tMovie = transformer.transform(movie, new MovieTransformer());
+
     return ServerResponse.ok()
-        .body(movie, Movie.class);
+        .body(tMovie, Map.class);
   }
 
   /**
@@ -58,7 +70,7 @@ public class MovieHandler {
    */
   public Mono<ServerResponse> add(ServerRequest request) {
 
-    Mono<String> responseData = request.bodyToMono(MovieRequestEntity.class)
+    Mono<String> movieId = request.bodyToMono(MovieRequestEntity.class)
         .flatMap(payload -> {
 
           // validate
@@ -69,11 +81,13 @@ public class MovieHandler {
             return Mono.error(ex);
           }
 
-          return Mono.just(String.format("{id: \"%s\"}", "1234567"));
+          return this.movieService.addMovie(new Movie(null, "Movie 4"));
         });
+
+    Mono<Map> tMovieId = transformer.transform(movieId, new ResourceIdentifierTransformer());
 
     return ServerResponse
         .status(HttpStatus.CREATED)
-        .body(responseData, String.class);
+        .body(tMovieId, Map.class);
   }
 }

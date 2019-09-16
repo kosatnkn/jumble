@@ -1,11 +1,19 @@
 package com.example.jumble.application.transport.response.transformers;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import com.example.jumble.application.transformer.ResponseEntity;
+import java.util.HashMap;
+import java.util.Map;
 
-@Data
-@AllArgsConstructor
-public class ResourceIdentifierTransformer {
+public class ResourceIdentifierTransformer implements ResponseEntity {
 
-  private int id;
+  @Override
+  public Map transform(Object entity) {
+
+    Map<String, Object> mapping = new HashMap<>();
+
+    mapping.put("id", entity);
+
+    return mapping;
+
+  }
 }

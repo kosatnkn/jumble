@@ -1,7 +1,23 @@
 package com.example.jumble.application.transport.response.transformers;
 
-public class MovieTransformer {
+import com.example.jumble.application.transformer.ResponseEntity;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.HashMap;
+import java.util.Map;
 
-  private String id;
-  private String name;
+public class MovieTransformer implements ResponseEntity {
+
+  @Override
+  public Map transform(Object entity) {
+
+    ObjectMapper mapper = new ObjectMapper();
+    Map entityMap = mapper.convertValue(entity, Map.class);
+
+    Map<String, Object> mapping = new HashMap<>();
+
+    mapping.put("transformed_id", entityMap.get("id"));
+    mapping.put("transformed_title", entityMap.get("title"));
+
+    return mapping;
+  }
 }

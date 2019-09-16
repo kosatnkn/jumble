@@ -39,6 +39,19 @@ public class MovieService {
   }
 
   /**
+   * Add a movie
+   *
+   * @param movie movie
+   * @return Mono<Movie>
+   */
+  public Mono<String> addMovie(Movie movie) {
+
+    Mono<Movie> newMovie = this.movieRepository.save(movie);
+
+    return newMovie.flatMap(m -> Mono.just(m.getId()));
+  }
+
+  /**
    * Get a Flux of events associated with the Movie
    *
    * @param movieId Movie id
