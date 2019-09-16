@@ -1,7 +1,6 @@
 package com.example.jumble.application.validator;
 
 import com.example.jumble.application.exception.types.ValidationException;
-import com.example.jumble.application.transport.request.entities.RequestEntity;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;

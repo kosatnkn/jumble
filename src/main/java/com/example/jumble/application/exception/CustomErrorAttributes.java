@@ -1,7 +1,7 @@
 package com.example.jumble.application.exception;
 
 import com.example.jumble.application.exception.types.ValidationException;
-import com.example.jumble.application.transport.request.entities.RequestEntity;
+import com.example.jumble.application.validator.RequestEntity;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;

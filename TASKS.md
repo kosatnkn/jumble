@@ -19,7 +19,7 @@
     See [Configuring Logback with Spring Boot](https://lankydan.dev/2019/01/09/configuring-logback-with-spring-boot)
     for more details.
     
-- [ ] Add Validator
+- [x] Add Validator
 
 - [ ] Transformers
 
