@@ -1,21 +1,21 @@
 package com.example.jumble.domain.services;
 
+import com.example.jumble.domain.boundary.repositories.MovieRepositoryInterface;
+import com.example.jumble.domain.boundary.webclients.IMDBClientInterface;
 import com.example.jumble.domain.entities.Movie;
-import com.example.jumble.domain.entities.MovieEvent;
-import com.example.jumble.domain.boundary.repositories.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
-import java.util.Date;
-
 @Service
 public class MovieService {
 
   @Autowired
-  private MovieRepository movieRepository;
+  private MovieRepositoryInterface movieRepository;
+
+  @Autowired
+  private IMDBClientInterface imdbClient;
 
   /**
    * Get a Flux of Movies
@@ -52,14 +52,13 @@ public class MovieService {
   }
 
   /**
-   * Get a Flux of events associated with the Movie
+   * Get rating of the movie
    *
-   * @param movieId Movie id
-   * @return Flux<MovieEvent>
+   * @param movie movie
+   * @return Mono<Double>
    */
-  public Flux<MovieEvent> getEvents(String movieId) {
+  public Mono<Double> getRating(Movie movie) {
 
-    return Flux.<MovieEvent>generate(sink -> sink.next(new MovieEvent(movieId, new Date())))
-        .delayElements(Duration.ofSeconds(1));
+    return this.imdbClient.getRating(movie);
   }
 }

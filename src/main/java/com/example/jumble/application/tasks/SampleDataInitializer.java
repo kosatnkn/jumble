@@ -1,7 +1,7 @@
 package com.example.jumble.application.tasks;
 
 import com.example.jumble.domain.entities.Movie;
-import com.example.jumble.domain.boundary.repositories.MovieRepository;
+import com.example.jumble.domain.boundary.repositories.MovieRepositoryInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import reactor.core.publisher.Flux;
 public class SampleDataInitializer implements ApplicationRunner {
 
 	@Autowired
-	private MovieRepository mr;
+	private MovieRepositoryInterface mr;
 
 	private Logger logger = LoggerFactory.getLogger(SampleDataInitializer.class);
 
