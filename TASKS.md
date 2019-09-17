@@ -21,7 +21,7 @@
     
 - [x] Add Validator
 
-- [ ] Transformers
+- [x] Transformers
 
 - [ ] Add Web Clients to connect to third party REST APIs
 
