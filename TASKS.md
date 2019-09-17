@@ -23,7 +23,7 @@
 
 - [x] Transformers
 
-- [ ] Add Web Clients to connect to third party REST APIs
+- [x] Add Web Clients to connect to third party REST APIs
 
 - [ ] Research on adding custom methods to repositories
 
