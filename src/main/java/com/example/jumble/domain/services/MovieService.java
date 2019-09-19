@@ -61,4 +61,28 @@ public class MovieService {
 
     return this.imdbClient.getRating(movie);
   }
+
+  /**
+   * Edit Movie
+   *
+   * @param movie Movie
+   * @return Mono<Void>
+   */
+  public Mono<Void> edit(Movie movie) {
+
+    Mono<Movie> editedBanner = this.movieRepository.save(movie);
+
+    return editedBanner.then(Mono.empty());
+  }
+
+  /**
+   * Delete Movie
+   *
+   * @param id Movie id
+   * @return Mono<Void>
+   */
+  public Mono<Void> delete(String id) {
+
+    return this.movieRepository.deleteById(id);
+  }
 }

@@ -39,10 +39,10 @@ public class MovieHandler {
 
     Flux<Movie> movies = this.movieService.getAllMovies();
 
-    Flux<Map> tMovies = transformer.transform(movies, new MovieTransformer());
+    Flux<Map> trMovies = transformer.transform(movies, new MovieTransformer());
 
     return ServerResponse.ok()
-        .body(tMovies, Map.class);
+        .body(trMovies, Map.class);
   }
 
   /**
@@ -56,10 +56,10 @@ public class MovieHandler {
     String id = request.pathVariable("id");
     Mono<Movie> movie = this.movieService.getMovieById(id);
 
-    Mono<Map> tMovie = transformer.transform(movie, new MovieTransformer());
+    Mono<Map> trMovie = transformer.transform(movie, new MovieTransformer());
 
     return ServerResponse.ok()
-        .body(tMovie, Map.class);
+        .body(trMovie, Map.class);
   }
 
   /**
@@ -81,13 +81,66 @@ public class MovieHandler {
             return Mono.error(ex);
           }
 
-          return this.movieService.addMovie(new Movie(null, "Movie 4"));
+          // map
+          Movie movie = new Movie();
+          movie.setTitle(payload.getTitle());
+
+          return this.movieService.addMovie(movie);
         });
 
-    Mono<Map> tMovieId = transformer.transform(movieId, new ResourceIdentifierTransformer());
+    Mono<Map> trMovieId = transformer.transform(movieId, new ResourceIdentifierTransformer());
 
     return ServerResponse
         .status(HttpStatus.CREATED)
-        .body(tMovieId, Map.class);
+        .body(trMovieId, Map.class);
+  }
+
+  /**
+   * Handle updating of an existing movie
+   *
+   * @param request ServerRequest
+   * @return ServerResponse
+   */
+  public Mono<ServerResponse> edit(ServerRequest request) {
+
+    // get query parameters
+    String id = request.pathVariable("id");
+
+    Mono<Void> done = request.bodyToMono(MovieRequestEntity.class)
+        .flatMap(payload -> {
+
+          // validate
+          try {
+            this.validator.validate(payload);
+          }
+          catch (Exception ex) {
+            return Mono.error(ex);
+          }
+
+          // map
+          Movie movie = new Movie();
+          movie.setId(id);
+          movie.setTitle(payload.getTitle());
+
+          return this.movieService.edit(movie);
+        });
+
+    return done.then(ServerResponse.noContent().build());
+  }
+
+  /**
+   * Handle deletion of an existing movie
+   *
+   * @param request ServerRequest
+   * @return ServerResponse
+   */
+  public Mono<ServerResponse> delete(ServerRequest request) {
+
+    // get query parameters
+    String id = request.pathVariable("id");
+
+    Mono<Void> done = this.movieService.delete(id);
+
+    return done.then(ServerResponse.noContent().build());
   }
 }
