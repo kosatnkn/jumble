@@ -1,7 +1,7 @@
 package com.example.jumble.application.exception;
 
 import com.example.jumble.application.exception.types.ValidationException;
-import com.example.jumble.application.validator.RequestEntity;
+import com.example.jumble.application.validator.RequestEntityInterface;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -114,7 +114,7 @@ public class CustomErrorAttributes extends DefaultErrorAttributes {
    * @param errors Set of validation errors
    * @return error map
    */
-  private Map<String, ArrayList<String>> formatValidationErrors(Set<ConstraintViolation<RequestEntity>> errors) {
+  private Map<String, ArrayList<String>> formatValidationErrors(Set<ConstraintViolation<RequestEntityInterface>> errors) {
 
     Map<String, ArrayList<String>> errDetails = new LinkedHashMap<String, ArrayList<String>>();
 

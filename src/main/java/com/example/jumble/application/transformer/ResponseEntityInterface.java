@@ -2,6 +2,6 @@ package com.example.jumble.application.transformer;
 
 import java.util.Map;
 
-public interface ResponseEntity {
+public interface ResponseEntityInterface {
   public Map transform(Object entity);
 }

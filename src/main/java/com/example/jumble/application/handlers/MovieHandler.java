@@ -1,6 +1,6 @@
 package com.example.jumble.application.handlers;
 
-import com.example.jumble.application.transformer.ResponseEntity;
+import com.example.jumble.application.logger.Logger;
 import com.example.jumble.application.transformer.ResponseEntityTransformer;
 import com.example.jumble.application.transport.request.entities.MovieRequestEntity;
 import com.example.jumble.application.transport.response.transformers.MovieTransformer;
@@ -25,6 +25,9 @@ public class MovieHandler {
 
   @Autowired
   private ResponseEntityTransformer transformer;
+
+  @Autowired
+  private Logger logger;
 
   @Autowired
   private MovieService movieService;

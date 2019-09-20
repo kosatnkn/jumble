@@ -15,7 +15,7 @@ public class ResponseEntityTransformer {
    * @param transformer ResponseEntity
    * @return Mono
    */
-  public Mono<Map> transform(Mono<?> entityMono, ResponseEntity transformer) {
+  public Mono<Map> transform(Mono<?> entityMono, ResponseEntityInterface transformer) {
 
     return entityMono.flatMap(entity -> {
 
@@ -32,7 +32,7 @@ public class ResponseEntityTransformer {
    * @param transformer Response Transformer
    * @return Flux
    */
-  public Flux<Map> transform(Flux<?> entityFlux, ResponseEntity transformer) {
+  public Flux<Map> transform(Flux<?> entityFlux, ResponseEntityInterface transformer) {
 
     return entityFlux.flatMap( entity -> {
 

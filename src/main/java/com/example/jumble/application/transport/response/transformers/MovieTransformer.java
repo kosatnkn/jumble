@@ -1,11 +1,11 @@
 package com.example.jumble.application.transport.response.transformers;
 
-import com.example.jumble.application.transformer.ResponseEntity;
+import com.example.jumble.application.transformer.ResponseEntityInterface;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MovieTransformer implements ResponseEntity {
+public class MovieTransformer implements ResponseEntityInterface {
 
   @Override
   public Map transform(Object entity) {
