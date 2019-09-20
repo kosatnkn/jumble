@@ -65,8 +65,6 @@ public class CustomErrorAttributes extends DefaultErrorAttributes {
 
     Map<String, Object> errorDetails = new LinkedHashMap<String, Object>();
 
-    System.out.println(error.getErrors());
-
     errorDetails.put("type", error.getClass().getSimpleName());
     errorDetails.put("errors", this.formatValidationErrors(error.getErrors()));
 
