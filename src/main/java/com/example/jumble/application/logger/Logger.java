@@ -1,15 +1,13 @@
 package com.example.jumble.application.logger;
 
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
-@Component
 public class Logger implements LoggerInterface {
 
   private org.slf4j.Logger logger;
 
-  public Logger() {
-    this.logger = LoggerFactory.getLogger("Custom Logger");
+  public Logger(Class<?> cls) {
+    this.logger = LoggerFactory.getLogger(cls);
   }
 
   @Override

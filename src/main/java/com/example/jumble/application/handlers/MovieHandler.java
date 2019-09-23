@@ -27,10 +27,10 @@ public class MovieHandler {
   private ResponseEntityTransformer transformer;
 
   @Autowired
-  private Logger logger;
-
-  @Autowired
   private MovieService movieService;
+
+  // init a logger
+  private Logger logger = new Logger(MovieHandler.class);
 
   /**
    * Handle get all movies request
@@ -43,6 +43,8 @@ public class MovieHandler {
     Flux<Movie> movies = this.movieService.getAllMovies();
 
     Flux<Map> trMovies = transformer.transform(movies, new MovieTransformer());
+
+    this.logger.info("Hello there");
 
     return ServerResponse.ok()
         .body(trMovies, Map.class);
