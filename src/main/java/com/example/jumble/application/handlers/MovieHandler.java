@@ -44,8 +44,6 @@ public class MovieHandler {
 
     Flux<Map> trMovies = transformer.transform(movies, new MovieTransformer());
 
-    this.logger.info("Hello there");
-
     return ServerResponse.ok()
         .body(trMovies, Map.class);
   }
