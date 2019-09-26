@@ -1,6 +1,8 @@
 package com.example.jumble.application.filters;
 
 import com.example.jumble.application.exception.types.FilterException;
+
+import java.util.Arrays;
 import java.util.List;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
@@ -15,7 +17,17 @@ public class RequestCheckFilter implements WebFilter {
   @Override
   public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
 
+    final String[] ignoredRoutes = new String[]{
+            "/actuator/prometheus"
+    };
+
     List<String> contentType = exchange.getRequest().getHeaders().get(HttpHeaders.CONTENT_TYPE);
+    String endpoint = exchange.getRequest().getPath().value();
+
+    // check ignored routes
+    if(Arrays.asList(ignoredRoutes).contains(endpoint)){
+      return chain.filter(exchange);
+    }
 
     if (contentType == null) {
       return Mono.error(new FilterException("No content type"));
