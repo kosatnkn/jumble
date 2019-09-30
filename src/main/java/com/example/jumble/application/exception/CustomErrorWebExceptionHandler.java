@@ -73,6 +73,7 @@ public class CustomErrorWebExceptionHandler extends AbstractErrorWebExceptionHan
         return HttpStatus.UNPROCESSABLE_ENTITY;
       case "FilterException":
       case "DomainException":
+      case "WebClientException":
         return HttpStatus.BAD_REQUEST;
       default:
         return HttpStatus.INTERNAL_SERVER_ERROR;

@@ -27,6 +27,7 @@ public class CustomErrorAttributes extends DefaultErrorAttributes {
         return handleValidationException((ValidationException)error);
       case "FilterException":
       case "DomainException":
+      case "WebClientException":
         return handleRecoverableException(error, includeStackTrace);
       default:
         return handleGenericException(error, includeStackTrace);
