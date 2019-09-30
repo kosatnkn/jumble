@@ -1,6 +1,5 @@
 package com.example.jumble.application.handlers;
 
-import com.example.jumble.application.logger.Logger;
 import com.example.jumble.application.transformer.ResponseEntityTransformer;
 import com.example.jumble.application.transport.request.entities.MovieRequestEntity;
 import com.example.jumble.application.transport.response.transformers.MovieTransformer;
@@ -8,7 +7,7 @@ import com.example.jumble.application.transport.response.transformers.ResourceId
 import com.example.jumble.application.validator.RequestEntityValidator;
 import com.example.jumble.domain.entities.Movie;
 import com.example.jumble.domain.services.MovieService;
-import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -17,7 +16,10 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Map;
+
 @Component
+@Slf4j // logger (generates a class property of name `log`)
 public class MovieHandler {
 
   @Autowired
@@ -29,9 +31,6 @@ public class MovieHandler {
   @Autowired
   private MovieService movieService;
 
-  // init a logger
-  private Logger logger = new Logger(MovieHandler.class);
-
   /**
    * Handle get all movies request
    *
@@ -42,7 +41,9 @@ public class MovieHandler {
 
     Flux<Movie> movies = this.movieService.getAllMovies();
 
-    Flux<Map> trMovies = transformer.transform(movies, new MovieTransformer());
+    Flux<Map> trMovies = this.transformer.transform(movies, new MovieTransformer());
+
+    log.info("Lombok logger");
 
     return ServerResponse.ok()
         .body(trMovies, Map.class);
@@ -59,7 +60,7 @@ public class MovieHandler {
     String id = request.pathVariable("id");
     Mono<Movie> movie = this.movieService.getMovieById(id);
 
-    Mono<Map> trMovie = transformer.transform(movie, new MovieTransformer());
+    Mono<Map> trMovie = this.transformer.transform(movie, new MovieTransformer());
 
     return ServerResponse.ok()
         .body(trMovie, Map.class);
