@@ -43,6 +43,7 @@ public class MovieHandler {
 
     Flux<Map> trMovies = this.transformer.transform(movies, new MovieTransformer());
 
+    // logging
     log.info("Lombok logger");
 
     return ServerResponse.ok()
