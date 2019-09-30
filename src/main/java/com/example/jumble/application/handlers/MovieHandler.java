@@ -68,6 +68,28 @@ public class MovieHandler {
   }
 
   /**
+   * Handle get rating of a movie.
+   *
+   * @param request ServerRequest
+   * @return ServerResponse
+   */
+  public Mono<ServerResponse> getRating(ServerRequest request) {
+
+    String id = request.pathVariable("id");
+
+    // map
+    Movie movie = new Movie();
+    movie.setId(id);
+
+    Mono<Double> rating = this.movieService.getRating(movie);
+
+//    Mono<Map> trMovie = this.transformer.transform(movie, new MovieTransformer());
+
+    return ServerResponse.ok()
+            .body(rating, Double.class);
+  }
+
+  /**
    * Handle creating a new movie entry
    *
    * @param request ServerRequest

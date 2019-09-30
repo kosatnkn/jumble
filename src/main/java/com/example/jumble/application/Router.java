@@ -24,6 +24,7 @@ public class Router {
     return RouterFunctions
         .route(RequestPredicates.GET("/movies"), movieHandler::get)
         .andRoute(RequestPredicates.GET("/movies/{id}"), movieHandler::getById)
+        .andRoute(RequestPredicates.GET("/movies/{id}/rating"), movieHandler::getRating)
         .andRoute(RequestPredicates.POST("/movies"), movieHandler::add)
         .andRoute(RequestPredicates.PUT("/movies/{id}"), movieHandler::edit)
         .andRoute(RequestPredicates.DELETE("/movies/{id}"), movieHandler::delete);
