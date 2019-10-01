@@ -1,8 +1,7 @@
 package com.example.jumble.externals.webclients;
 
-import com.example.jumble.domain.entities.Movie;
 import com.example.jumble.domain.boundary.webclients.IMDBClientInterface;
-import io.micrometer.core.instrument.Counter;
+import com.example.jumble.domain.entities.Movie;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
 import org.springframework.beans.factory.annotation.Autowired;
