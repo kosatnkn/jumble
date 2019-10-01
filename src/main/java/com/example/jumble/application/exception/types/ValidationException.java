@@ -4,7 +4,7 @@ import com.example.jumble.application.validator.RequestEntityInterface;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 
-public class ValidationException extends Exception {
+public class ValidationException extends RuntimeException {
 
   private Set<ConstraintViolation<RequestEntityInterface>> errors;
 
