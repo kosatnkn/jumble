@@ -101,12 +101,7 @@ public class MovieHandler {
         .flatMap(payload -> {
 
           // validate
-          try {
-            this.validator.validate(payload);
-          }
-          catch (Exception ex) {
-            return Mono.error(ex);
-          }
+          this.validator.validate(payload);
 
           // map
           Movie movie = new Movie();
