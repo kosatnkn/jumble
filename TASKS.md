@@ -25,7 +25,7 @@
 
 - [x] Add Web Clients to connect to third party REST APIs
 
-- [ ] Maven Archetype
+- [x] Maven Archetype
 
 - [ ] Research on adding custom methods to repositories
 
